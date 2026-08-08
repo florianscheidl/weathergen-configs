@@ -116,11 +116,10 @@ GOES_ABI_VIS :
   type : obs
   stream_id : 13
   filenames : ['observations-file-2017-2024-abi-goes16-VIS-o256-v2.zarr']
-  # Must match srdrwfy6's encoder embedder: 6 geoinfo channels (checkpoint also lists
-  # 'noise_time', an SSL self-flow augmentation channel not present in the zarr and not
-  # produced by this branch, so it is skipped and does not affect the embedder shape).
+  # wejf33qv parent trained GOES_ABI_VIS with a single geoinfo channel ('zenith');
+  # more channels change the block-unembed shapes and break checkpoint loading.
   target: []
-  geoinfo_channels : ['cos_local_time', 'sin_local_time', 'cos_julian_day', 'sin_julian_day', 'zenith', 'cos_sza']
+  geoinfo_channels : ['zenith']
   loss_weight : 1.0
   location_weight : cosine_latitude
   masking_override :

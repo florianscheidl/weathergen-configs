@@ -82,6 +82,11 @@ p_mean: 3.5  # only required if noise_distribution is log_normal
 p_std: 1.2  # only required if noise_distribution is log_normal
 
 healpix_level: 5
+# n320 + full obs at forecast masking (everything kept, 2 input steps) exceeds the
+# default cap of 64 in dense 2023 validation cells (see run tb4l9yu8). pe_embed is
+# not stored in checkpoints, so raising this is load-safe; note the sinusoid
+# frequencies derive from this value, so encodings shift slightly vs the parent.
+ae_local_max_tokens_per_cell: 128
 
 # Use 2D RoPE instead of traditional global positional encoding
 # When True: uses 2D RoPE based on healpix cell coordinates (lat/lon)
@@ -115,7 +120,7 @@ freeze_modules: ".*latent_pre_norm.*|.*latent_heads.*|.*pred_heads.*|.*target_to
 #below for FE and DECODER training
 # freeze_modules: ".*latent_pre_norm.*|.*latent_heads.*|.*encoder.*|.*StreamEmbedder_ERA5.*|.*embed_engine.*|.*embed_engine.*|.*ae_local_engine.*|.*ae_local_global_engine.*|.*ae_global_engine.*"
 
-load_chkpt: {'run_id': 'wejf33qv', 'epoch': -1}  
+load_chkpt: {'run_id': 'wejf33qv', 'epoch': 24}  # pinned (epoch -1 re-reads a moving "latest" at every chain restart)
 
 norm_type: "LayerNorm"
 qk_norm_type: "RMSNorm"
@@ -160,7 +165,9 @@ train_logging:
 # parameters for data loading
 data_loading :
 
-  num_workers: 12
+  # 12 workers exhaust node RAM / /dev/shm with full-grid n320 batches
+  # (SIGBUS/OOM in dhzgdwnh, ijrlmv4d, o6y5sexl); 8 is stable for ~half-day runs
+  num_workers: 8
   rng_seed: ???
   repeat_data_in_mini_epoch : False
 
@@ -169,7 +176,7 @@ data_loading :
 training_config:
   
   # training_mode: "masking", "student_teacher", "latent_loss"
-  training_mode: ["masking","student_teacher"] # ["student_teacher", "physical_loss"]  
+  training_mode: ["student_teacher"] # ["student_teacher", "physical_loss"]  
 
   num_mini_epochs: 128
   samples_per_mini_epoch: 4096
