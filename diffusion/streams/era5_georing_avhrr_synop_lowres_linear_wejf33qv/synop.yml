@@ -1,0 +1,43 @@
+# (C) Copyright 2024 WeatherGenerator contributors.
+#
+# This software is licensed under the terms of the Apache Licence Version 2.0
+# which can be obtained at http://www.apache.org/licenses/LICENSE-2.0.
+#
+# In applying this licence, ECMWF does not waive the privileges and immunities
+# granted to it by virtue of its status as an intergovernmental organisation
+# nor does it submit to any jurisdiction.
+
+# Matches the wejf33qv parent checkpoint (models/wejf33qv/model_wejf33qv.json):
+# stream_id 30, 7 source channels, 7 geoinfo channels, token_size 256,
+# embed dim 512, single-layer readout. The previous version of this file was
+# from a different lineage (stream_id 2, geoinfos [reportype, stalt, lsm],
+# token 512, dim 256) and made the checkpoint unloadable (run c1srnscx).
+SurfaceCombined :
+  type : obs
+  stream_id : 30
+  filenames : ['observations-ea-ofb-0001-1979-2025-combined-surface-v5.zarr']
+  source : ['obsvalue_tsts_0', 'obsvalue_t2m_0', 'obsvalue_td2m_0', 'obsvalue_u10m_0', 'obsvalue_v10m_0', 'obsvalue_pmsl_0', 'obsvalue_ps_0']
+  target : []
+  # forcing : True
+  geoinfo_channels : ['stalt', 'lsm', 'cos_sza', 'cos_local_time', 'sin_local_time', 'cos_julian_day', 'sin_julian_day']
+  loss_weight : 1.0
+  token_size : 256
+  tokenize_spacetime : False
+  max_num_targets : -1
+  embed :
+    net : transformer
+    num_tokens : 1
+    num_heads : 2
+    dim_embed : 512
+    num_blocks : 2
+  embed_target_coords :
+    net : linear
+    dim_embed : 512
+  target_readout :
+    num_layers : 1
+    num_heads : 4
+    self_attention : False
+    mlp_hidden_factor : 1
+  pred_head :
+    ens_size : 1
+    num_layers : 1
