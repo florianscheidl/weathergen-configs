@@ -90,15 +90,7 @@ norm_type: "LayerNorm"
 
 #####################################
 
-# streams_directory: "./config/streams/era5_1deg_forecasting/"
-# streams_directory: "./config/streams/era5_georing_avhrr_synop_lowres/"
-# streams_directory: "./weathergen-configs/streams/era5_n320_forecasting/"
-# streams_directory: "./weathergen-configs/streams/era5_georing_avhrr_synop_lowres_transformer/"
-# streams_directory: "./weathergen-configs/streams/era5_georing_avhrr_synop_lowres_linear/"
-# streams_directory: "./weathergen-configs/streams/era5_georing_avhrr_synop_lowres_2/"
-# streams_directory: "./weathergen-configs/streams/era5_georing_avhrr_synop_lowres_3/"
-# streams_directory: "./weathergen-configs/streams_preprint/era5_georing_avhrr_synop_lowres_linear/"
-streams_directory: "./weathergen-configs/streams_preprint/era5_georing_avhrr_synop_lowres_transformer/"
+streams_directory: "./weathergen-configs/streams_preops/era5_georing_avhrr_iasi_lowres_linear/"
 streams: ???
 
 # type of zarr_store
@@ -162,7 +154,7 @@ training_config:
     lr_final_decay: 2e-6
     lr_final: 0.0
     num_steps_warmup: 256
-    num_steps_cooldown: 512
+    num_steps_cooldown: 20000
     policy_warmup: "cosine"
     policy_decay: "constant"
     policy_cooldown: "linear"
