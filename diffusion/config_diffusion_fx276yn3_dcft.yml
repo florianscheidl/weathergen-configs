@@ -74,8 +74,8 @@ with_step_conditioning: True # False
 frequency_embedding_dim: 256
 embedding_dim: 512
 noise_distribution: &noise_distribution "log_uniform"  # "log_uniform" or "log_normal"
-sigma_min: &sigma_min 0.4
-sigma_max: &sigma_max 50
+sigma_min: &sigma_min 0.002
+sigma_max: &sigma_max 0.0021
 sigma_data: 1.0
 rho: 7
 p_mean: 3.5  # only required if noise_distribution is log_normal
@@ -109,20 +109,20 @@ latent_noise_deterministic_latents: True
 
 
 #below for FE training only
-freeze_modules: ".*latent_pre_norm.*|.*latent_heads.*|.*pred_heads.*|.*target_token_engines.*|.*embed_target_coords.*|.*encoder.*|.*StreamEmbedder_ERA5.*|.*embed_engine.*|.*ae_local_engine.*|.*ae_local_global_engine.*|.*ae_global_engine.*"
+# freeze_modules: ".*latent_pre_norm.*|.*latent_heads.*|.*pred_heads.*|.*target_token_engines.*|.*embed_target_coords.*|.*encoder.*|.*StreamEmbedder_ERA5.*|.*embed_engine.*|.*ae_local_engine.*|.*ae_local_global_engine.*|.*ae_global_engine.*"
 #below for DECODER training only
-# freeze_modules: ".*latent_pre_norm.*|.*latent_heads.*|.*encoder.*|.*StreamEmbedder_ERA5.*|.*embed_engine.*|.*noise_embedder.*|.*fe.*|.*latent_proj.*|.*ae_local_engine.*|.*ae_local_global_engine.*|.*ae_global_engine.*"
+freeze_modules: ".*latent_pre_norm.*|.*latent_heads.*|.*encoder.*|.*StreamEmbedder_ERA5.*|.*embed_engine.*|.*noise_embedder.*|.*fe.*|.*ae_local_engine.*|.*ae_local_global_engine.*|.*ae_global_engine.*"
 #below for FE and DECODER training
 # freeze_modules: ".*latent_pre_norm.*|.*latent_heads.*|.*encoder.*|.*StreamEmbedder_ERA5.*|.*embed_engine.*|.*ae_local_engine.*|.*ae_local_global_engine.*|.*ae_global_engine.*"
 
-load_chkpt: {'run_id': 'cw6a4szu', 'mini_epoch': 8}
+load_chkpt: {'run_id': 'fx276yn3', 'mini_epoch': 8}  # n320 with rope2d, 8 epochs
 
 norm_type: "LayerNorm"
 qk_norm_type: "RMSNorm"
 
 #####################################
 
-streams_directory: "/users/mkarlbau/repos/weathergen-configs/diffusion/streams/sebs_cw6a4szu/"
+streams_directory: "/users/mkarlbau/repos/weathergen-configs/diffusion/streams/sebs_fx276yn3/"
 streams: ???
 
 zarr_store: "zip"
@@ -156,7 +156,7 @@ train_logging:
 
 data_loading:
   num_workers: 8
-  num_workers_validation: 4
+  num_workers_validation: 2
   rng_seed: ???
   repeat_data_in_mini_epoch: False
   persistent_workers: False
@@ -190,13 +190,96 @@ training_config:
   time_window_len: 06:00:00
   window_offset_prediction: 0
 
+  # learning_rate_scheduling:
+  #   lr_start: 1e-06
+  #   lr_max: 0.0001
+  #   lr_final_decay: 2e-06
+  #   lr_final: 0.0
+  #   num_steps_warmup: 256
+  #   num_steps_cooldown: 512
+  #   policy_warmup: "cosine"
+  #   policy_decay: "cosine"
+  #   policy_cooldown: "linear"
+  #   parallel_scaling_policy: "const"
+
+  # optimizer:
+  #   grad_clip: 1.0
+  #   weight_decay: 0.1
+  #   log_grad_norms: False
+  #   adamw:
+  #     beta1: 0.9953125
+  #     beta2: 0.996875
+  #     eps: 1e-08
+
+  # losses:
+  #   physical:
+  #     enabled: False
+  #     type: Disabled
+  #   student-teacher:
+  #     enabled: False
+  #     type: Disabled
+  #     weight: 1.0
+  #     loss_fcts:
+  #       JEPA:
+  #         weight: 1
+  #         loss_extra_args:
+  #           temporal: True
+  #         out_dim: 2048
+  #         head: "transformer"
+  #         num_blocks: 6
+  #         num_heads: 16
+  #         with_qk_lnorm: True
+  #         intermediate_dim: 1024
+  #         dropout_rate: 0.1
+  #         target_source_correspondence:
+  #           "0":
+  #             "0": "independent"
+  #     target_and_aux_calc:
+  #       EMATeacher:
+  #         ema_ramp_up_ratio: null
+  #         ema_halflife_in_thousands: 400000
+  #         model_param_overrides:
+  #           training_config:
+  #             losses:
+  #               student-teacher:
+  #                 loss_fcts:
+  #                   JEPA:
+  #                     head: "identity"
+  #   forecast:
+  #     type: LossPhysical
+  #     loss_fcts:
+  #       mse: {}
+
+  # model_input:
+  #   random_easy:
+  #     masking_strategy: "forecast"
+  #     num_samples: 0
+  #     num_steps_input: 1
+  #     masking_strategy_config: {}
+  #     enabled: False
+  #   forecasting:
+  #     masking_strategy: "forecast"
+
+  # target_input:
+  #   random_easy_target:
+  #     masking_strategy: "forecast"
+  #     num_samples: 1
+  #     masking_strategy_config: {}
+  #     enabled: False
+
+  # forecast:
+  #   time_step: 06:00:00
+  #   offset: 1
+  #   num_steps: 8
+  #   policy: "fixed"
+
   learning_rate_scheduling :
     lr_start: 1e-6 #5e-5
-    lr_max: 1e-5 #1e-4
+    lr_max: 1e-4 #1e-4
     lr_final_decay: 1e-6
     lr_final: 0.0
     num_steps_warmup: 64
-    num_steps_cooldown: 512
+    num_steps_cooldown: 32768
     policy_warmup: "cosine"
     policy_decay: "constant"
     policy_cooldown: "linear"
@@ -295,8 +378,29 @@ validation_config:
 # test config is used by default when running inference
 
 # Tags for experiment tracking
+# These tags will be logged in MLFlow along with completed runs for train, eval, val
+# The tags are free-form, with the following rules:
+# - tags should be primitive types (strings, numbers, booleans). NO lists or dictionaries
+# - tags should not duplicate existing config entries.
+# - try to reuse existing tags where possible. MLFlow does not like having too many unique tags
+# - do not use long strings in values (less than 20 characters is a good rule of thumb, we may enforce this in the future)
 wgtags:
+  # The name of the organization of the person running the experiment.
+  # This may be autofilled in the future. Expected values are lowercase strings 
+  # e.g. "ecmwf", "cmcc", "metnor", "jsc", "escience"
   org: null
+  # The Github issue corresponding to this run (number such as 1234)
+  # Github issues are the central point when running experiment and contain 
+  # links to hedgedocs, code branches, pull requests etc.
+  # It is recommended to associate a run with a Github issue.
   issue: null
+  # The name of the experiment. This is a distinctive codename for the experiment campaign being run.
+  # This is expected to be the primary tag for comparing experiments in MLFlow, along with the
+  # issue number.
+  # Expected values are lowercase strings with no spaces, just underscores:
+  # Examples: "rollout_ablation_grid"  
   exp: null
+  # *** Experiment-specific tags ***
+  # All extra tags (including lists, dictionaries, etc.) are treated 
+  # as strings by mlflow, so treat all extra tags as simple string key: value pairs.
   grid: null
