@@ -92,7 +92,7 @@ norm_type: "LayerNorm"
 #####################################
 
 # streams_directory: "./config/streams/era5_georing_avhrr/"
-streams_directory: "./weathergen-configs/streams/operan_georing_avhrr_synop_highres/"
+streams_directory: "../weathergen-configs/streams/era5_georing_avhrr_synop_highres_2/"
 streams: ???
 
 # type of zarr_store
