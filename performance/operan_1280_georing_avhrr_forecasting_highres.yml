@@ -1,0 +1,11 @@
+streams_directory: "../weathergen-configs/streams/era5_o1280_georing_avhrr_synop_highres/"
+
+encoder_spatial_parallel_size: 8
+spatial_local_physical_loss: True
+spatial_local_validation: True
+data_loading:
+  reader_spatial_filtering: True
+  num_workers: 1
+training_config:
+  start_date: 2017-01-01T00:00
+  end_date: 2022-12-31T00:00

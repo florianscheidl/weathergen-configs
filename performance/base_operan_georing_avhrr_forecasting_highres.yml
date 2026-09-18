@@ -127,10 +127,10 @@ train_logging:
 # parameters for data loading
 data_loading :
 
-  num_workers: 12
+  num_workers: 8
   rng_seed: ???
   repeat_data_in_mini_epoch : False
-
+  reader_spatial_filtering: True
 
 # config for training
 training_config:
@@ -268,3 +268,7 @@ wgtags:
   # All extra tags (including lists, dictionaries, etc.) are treated 
   # as strings by mlflow, so treat all extra tags as simple string key: value pairs.
   grid: null
+
+encoder_spatial_parallel_size: 4
+spatial_local_physical_loss: True
+spatial_local_validation: True
