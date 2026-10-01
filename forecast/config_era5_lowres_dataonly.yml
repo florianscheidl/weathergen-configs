@@ -23,7 +23,9 @@ ae_local_num_blocks: 1
 ae_local_num_heads: 1
 ae_local_dropout_rate: 0.0
 ae_local_with_qk_lnorm: True
-ae_local_max_tokens_per_cell: 128
+# model-only: size of the per-cell positional-encoding table (N x ae_local_dim_embed), not read
+# by the data pipeline; set high so the token-count assert in EmbeddingEngine never fires
+ae_local_max_tokens_per_cell: 8192
 
 ae_local_num_queries: 1
 ae_local_queries_per_cell: False
@@ -70,7 +72,7 @@ fe_impute_latent_noise_std: 1e-4
 # currently fixed to 1.0 (due to limitations with flex_attention and triton)
 forecast_att_dense_rate: 1.0
 
-healpix_level: 1
+healpix_level: 5
 
 rope_2D: False
 
