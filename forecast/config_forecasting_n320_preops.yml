@@ -90,7 +90,7 @@ norm_type: "LayerNorm"
 
 #####################################
 
-streams_directory: "./weathergen-configs/streams_preops/era5_georing_avhrr_iasi_lowres_linear/"
+streams_directory: "../weathergen-configs/streams_preops/era5_georing_avhrr_iasi_lowres_linear/"
 streams: ???
 
 # type of zarr_store
