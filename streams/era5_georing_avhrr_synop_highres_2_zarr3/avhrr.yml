@@ -7,9 +7,8 @@
 # granted to it by virtue of its status as an intergovernmental organisation
 # nor does it submit to any jurisdiction.
 
-# Zarr 3 copies (sharded) of the stores in ../era5_georing_avhrr_synop_highres_2/, on
-# JUPITER. Only the filenames differ from that folder. They are absolute because the
-# reader joins a bare filename with the first entry of data_paths only.
+# Zarr 3 copies (sharded) of the stores in ../era5_georing_avhrr_synop_highres_2/.
+# Only the filenames differ from that folder.
 
 # METOP_ABC_AVHRR_IASI :
 #   type : obs
@@ -42,8 +41,7 @@
 AVHRR :
   type : obs
   stream_id : 22
-  filenames :
-    - /e/scratch/hclimrep/kreshpa1/zarr3_datasets/observations-file-2001-2023-eumetsat-avhrr-o256-v4-zarr3-shard128.zarr
+  filenames : ['observations-file-2001-2023-eumetsat-avhrr-o256-v4-zarr3-shard128.zarr']
   geoinfo_channels : ['cos_local_time', 'sin_local_time', 'cos_julian_day', 'sin_julian_day']
   coords_channels: ["latitude", "longitude"]
   loss_weight : 1.0
@@ -72,8 +70,7 @@ AVHRR :
 METOP_IASI_PC :
   type : obs
   stream_id : 21
-  filenames :
-    - /e/scratch/hclimrep/kreshpa1/zarr3_datasets/observations-od-ai-0001-2011-2023-iasi-pc-bufr-v1-zarr3-shard128.zarr
+  filenames : ['observations-od-ai-0001-2011-2023-iasi-pc-bufr-v1-zarr3-shard128.zarr']
   geoinfo_channels : ['cos_local_time', 'sin_local_time', 'cos_julian_day', 'sin_julian_day']
   loss_weight : 1.0
   masking_override :

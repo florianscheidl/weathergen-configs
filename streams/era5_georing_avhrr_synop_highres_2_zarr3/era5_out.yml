@@ -7,14 +7,12 @@
 # granted to it by virtue of its status as an intergovernmental organisation
 # nor does it submit to any jurisdiction.
 
-# Zarr 3 copies (sharded) of the stores in ../era5_georing_avhrr_synop_highres_2/, on
-# JUPITER. Only the filenames differ from that folder. They are absolute because the
-# reader joins a bare filename with the first entry of data_paths only.
+# Zarr 3 copies (sharded) of the stores in ../era5_georing_avhrr_synop_highres_2/.
+# Only the filenames differ from that folder.
 
 ERA5 :
   type : anemoi
-  filenames :
-    - /e/scratch/hclimrep/kreshpa1/zarr3_datasets/aifs-ea-an-oper-0001-mars-n320-1979-2024-1h-v2-with-era51-zarr3-shard1536.zarr
+  filenames : ['aifs-ea-an-oper-0001-mars-n320-1979-2024-1h-v2-with-era51-zarr3-shard1536.zarr']
   stream_id : 1
   source : [ ]
   target_exclude : ['z', 'w_10', 'w_50', 'w_100', 'w_150', 'w_200', 'w_250', 'w_300', 'w_400', 'w_500', 'w_600', 'w_700', 'w_850', 'w_925', 'w_1000', 'slor', 'sdor', 'tcw', 'cp', 'tp', 'q_50', 'q_100']

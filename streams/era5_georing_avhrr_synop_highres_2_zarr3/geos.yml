@@ -7,15 +7,13 @@
 # granted to it by virtue of its status as an intergovernmental organisation
 # nor does it submit to any jurisdiction.
 
-# Zarr 3 copies (sharded) of the stores in ../era5_georing_avhrr_synop_highres_2/, on
-# JUPITER. Only the filenames differ from that folder. They are absolute because the
-# reader joins a bare filename with the first entry of data_paths only.
+# Zarr 3 copies (sharded) of the stores in ../era5_georing_avhrr_synop_highres_2/.
+# Only the filenames differ from that folder.
 
 METEOSAT_SEVIRI_IR_HIRES :
   type : obs
   stream_id : 10
-  filenames :
-    - /e/scratch/hclimrep/kreshpa1/zarr3_datasets/observations-file-2014-2024-seviri-h512-v5-zarr3-shard1280.zarr
+  filenames : ['observations-file-2014-2024-seviri-h512-v5-zarr3-shard1280.zarr']
   geoinfo_channels : ['cos_local_time', 'sin_local_time', 'cos_julian_day', 'sin_julian_day', 'zenith', 'cos_sza']
   location_weight : cosine_latitude
   token_size : 1536
@@ -41,8 +39,7 @@ METEOSAT_SEVIRI_IR_HIRES :
 GOES_ABI_IR_HIRES :
   type : obs
   stream_id : 11
-  filenames :
-    - /e/scratch/hclimrep/kreshpa1/zarr3_datasets/observations-file-2017-2024-abi-goes16-IR-h512-v2-zarr3-shard1280.zarr
+  filenames : ['observations-file-2017-2024-abi-goes16-IR-h512-v2-zarr3-shard1280.zarr']
   geoinfo_channels : ['cos_local_time', 'sin_local_time', 'cos_julian_day', 'sin_julian_day','zenith', 'cos_sza']
   location_weight : cosine_latitude
   token_size : 1536
@@ -68,9 +65,7 @@ GOES_ABI_IR_HIRES :
 HIMAWARI_AHI_IR_HIRES :
   type : obs
   stream_id : 12
-  filenames :
-    - /e/scratch/hclimrep/kreshpa1/zarr3_datasets/observations-file-2015-2022-himawari8-IR-h512-v1-zarr3-shard1280.zarr
-    - /e/scratch/hclimrep/kreshpa1/zarr3_datasets/observations-file-2022-2024-himawari9-IR-o256-v1-zarr3-shard128.zarr
+  filenames : ['observations-file-2015-2022-himawari8-IR-h512-v1-zarr3-shard1280.zarr', 'observations-file-2022-2024-himawari9-IR-o256-v1-zarr3-shard128.zarr']
   geoinfo_channels : ['cos_local_time', 'sin_local_time', 'cos_julian_day', 'sin_julian_day', 'zenith', 'cos_sza']
   location_weight : cosine_latitude
   token_size : 1536
@@ -96,8 +91,7 @@ HIMAWARI_AHI_IR_HIRES :
 GOES_ABI_VIS_HIRES   :
   type : obs
   stream_id : 13
-  filenames :
-    - /e/scratch/hclimrep/kreshpa1/zarr3_datasets/observations-file-2017-2024-abi-goes16-VIS-h512-v2-zarr3-shard1280.zarr
+  filenames : ['observations-file-2017-2024-abi-goes16-VIS-h512-v2-zarr3-shard1280.zarr']
   geoinfo_channels : ['cos_local_time', 'sin_local_time', 'cos_julian_day', 'sin_julian_day', 'zenith', 'cos_sza']
   location_weight : cosine_latitude
   token_size : 1536
@@ -123,9 +117,7 @@ GOES_ABI_VIS_HIRES   :
 HIMAWARI_AHI_VIS_HIRES :
   type : obs
   stream_id : 14
-  filenames :
-    - /e/scratch/hclimrep/kreshpa1/zarr3_datasets/observations-file-2015-2022-himawari8-VIS-h512-v1-zarr3-shard1280.zarr
-    - /e/scratch/hclimrep/kreshpa1/zarr3_datasets/observations-file-2022-2024-himawari9-VIS-h512-v1-zarr3-shard1280.zarr
+  filenames : ['observations-file-2015-2022-himawari8-VIS-h512-v1-zarr3-shard1280.zarr', 'observations-file-2022-2024-himawari9-VIS-h512-v1-zarr3-shard1280.zarr']
   # geoinfo_channels : ['cos_local_time', 'sin_local_time', 'cos_julian_day', 'sin_julian_day', 'zenith', 'cos_sza']
   geoinfo_channels : ['zenith']
   location_weight : cosine_latitude
